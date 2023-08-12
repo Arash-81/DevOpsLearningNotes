@@ -60,6 +60,7 @@
 
 ## Storage Management
 /media is supposed to be the mount point for removable media while /mnt is for temporary mounts initiated by the user
+- blkid list of device uuid
 - lsblk: list block devices
 - du: 
 - df -h: displays information about file system disk space usage on the mounted file system.
