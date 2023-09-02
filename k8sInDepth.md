@@ -1,6 +1,6 @@
 # Kubernetes Components and Architecture 
 
-![Alt text](../MyCheatSheets/images/k8sArch.png)
+![Alt text](./images/k8sArch.png)
 
 - Kubernetes follows a client-server architecture. It’s possible to have a multi-master setup (for high availability), but by default there is a single master server which acts as a controlling node and point of contact.
 
@@ -297,8 +297,8 @@ In this example, in the container definition we set a request for 100m cores of 
 
 	resources:
 	requests:
-			cpu: 0.1
-			memory: 4Mi
+		cpu: 0.1
+		memory: 4Mi
 
 ### Kubernetes Limits
 
