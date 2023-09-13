@@ -1,36 +1,35 @@
 ## Process Monitoring
 
-- [ps](https://www.sysadmin.md/ps-cheatsheet.html) \- report a snapshot of the current processes.
+- [ps](https://www.sysadmin.md/ps-cheatsheet.html) \- Report a snapshot of the current processes.
     
-- [top](https://gist.github.com/ericandrewlewis/4983670c508b2f6b181703df43438c37) \- display Linux processes.
+- [top](https://gist.github.com/ericandrewlewis/4983670c508b2f6b181703df43438c37) \- Display Linux processes.
     
-- [htop](https://www.maketecheasier.com/power-user-guide-htop/) \- interactive process viewer.
+- [htop](https://www.maketecheasier.com/power-user-guide-htop/) \- Interactive process viewer.
     
-- atop - advanced interactive monitor to view the load on a Linux system.
+- atop - Advanced interactive monitor to view the load on a Linux system.
     
-- [lsof](https://www.golinuxcloud.com/lsof-command-in-linux/) - list open files.
+- [lsof](https://www.golinuxcloud.com/lsof-command-in-linux/) - List open files.
     
 
 ## Performance Monitoring
 
 - nmon - A system monitor tool for Linux and AIX systems.
 - iostat - A tool that reports CPU statistics and input/output statistics for devices, partitions and network filesystems.
-- sar - A system monitor command used to report on various system loads, including CPU activity, memory/paging, device load, network.
-- vmstat - A tool that reports virtual memory statistics.
+- [sar](https://www.geeksforgeeks.org/sar-command-linux-monitor-system-performance/) - A system monitor command used to report on various system loads, including CPU activity, memory/paging, device load, network.
+- [vmstat](https://www.geeksforgeeks.org/vmstat-command-in-linux-with-examples/) - A tool that reports virtual memory statistics.
 
 ## Networking Tools
 
 - [traceroute](https://www.geeksforgeeks.org/traceroute-command-in-linux-with-examples/) - Traces the route taken by packets over an IP network.
-- [ping](https://www.geeksforgeeks.org/ping-command-in-linux-with-examples/) - sends echo request packets to a host to test the Internet connection.
+- [ping](https://www.geeksforgeeks.org/ping-command-in-linux-with-examples/) - Sends echo request packets to a host to test the Internet connection.
 - [mtr](https://www.tecmint.com/mtr-a-network-diagnostic-tool-for-linux/) - Combines the functionality of traceroute and ping into a single diagnostic tool.
 - [nmap](https://www.freecodecamp.org/news/what-is-nmap-and-how-to-use-it-a-tutorial-for-the-greatest-scanning-tool-of-all-time/) - Scans hosts for open ports.
 - [netstat](https://quickref.me/netstat.html) - Displays network connections, routing tables, interface statistics, masquerade connections, and multicast memberships.
 ![](./images/netstat.png)
-- ufw and firewalld - Firewall management tools.
-- iptables and nftables - Firewall management tools.
-- tcpdump - Dumps traffic on a network.
+- [iptables](https://erravindrapawadia.medium.com/iptables-tutorial-beginners-to-advanced-guide-to-linux-firewall-839e10501759) -  Firewall utility that uses policy chains to allow or block traffic that will be enforced by the linux kernel’s netfilter framework. 
+- [tcpdump](https://opensource.com/article/18/10/introduction-tcpdump) - Dumps traffic on a network.
 - [dig](https://www.cyberciti.biz/files/pdf/dig%20command%20cheat%20sheet.pdf) - DNS lookup utility.
-- [ip](https://linuxopsys.com/wp-content/uploads/2023/07/ip-cheat-sheet.pdf) 
+- [ip](https://linuxopsys.com/wp-content/uploads/2023/07/ip-cheat-sheet.pdf) - Show or manipulate routing, devices, and tunnels.
   
 - scp - Secure copy
   ![Alt text](./images/scp.png)
@@ -49,7 +48,6 @@
 - [awk](https://linuxize.com/post/awk-command/) - A programming language designed for text processing and typically used as a data extraction and reporting tool.
 - [sed](https://www.geeksforgeeks.org/sed-command-in-linux-unix-with-examples/) - A stream editor for filtering and transforming text.
 - [grep](https://www.geeksforgeeks.org/grep-command-in-unixlinux/) - A command-line utility for searching plain-text data sets for lines that match a regular expression.
-- egrep
 - [sort](https://www.geeksforgeeks.org/sort-command-linuxunix-examples/) - A command-line utility for sorting lines of text files.
 - [cut](https://bencane.com/2012/10/22/cheat-sheet-cutting-text-with-cut/) - A command-line utility for cutting sections from each line of files.
 - [uniq](https://www.geeksforgeeks.org/uniq-command-in-linux-with-examples/) - A command-line utility for reporting or omitting repeated lines.
@@ -59,12 +57,12 @@
 - [wc](https://onecompiler.com/cheatsheets/wc) - A command-line utility for printing newline, word, and byte counts for files.
 
 ## Storage Management
-/media is supposed to be the mount point for removable media while /mnt is for temporary mounts initiated by the user
-- blkid list of device uuid
-- lsblk: list block devices
-- du: 
-- df -h: displays information about file system disk space usage on the mounted file system.
-- ncdu
+
+- blkid: List of device uuid
+- lsblk: List block devices
+- [du](https://www.redhat.com/sysadmin/du-command-options): Disk usage information  
+- df -hi: Displays information about file system disk space and inode usage.
+- ncdu: Disk usage analyzer with an ncurses interface
 - fdisk: create, delete, resize, change and move partitions on the hard drive
     - sudo fdisk -l: list the partition table of all available disks on a Linux system
     - sudo fdisk /dev/sdx ->
@@ -75,12 +73,23 @@
    - mkfs.ext4 -> using on linux machine
 - mount/umount: 
     - in mount 
+
+> [!NOTE] 
+> /media is supposed to be the mount point for removable media while /mnt is for temporary mounts initiated by the user
   
 ## Storage Modes
 
 <img src="./images/storage-types.png" style="max-width: 600px">
 
-<table class="has-fixed-layout"><thead><tr><th></th><th> SAN</th><th> NAS</th><th> DAS</th></tr></thead><tbody><tr><td><strong>Type of storage</strong></td><td>Blocks</td><td>Shared files</td><td>Sectors</td></tr><tr><td><strong>Transmission of data</strong></td><td>Fiber Channel</td><td>Ethernet, TCP/IP</td><td>IDE/SCSI</td></tr><tr><td><strong>Speed</strong></td><td>5-10 ms</td><td>20-50 ms</td><td>5-10 ms</td></tr><tr><td><strong>Complexity</strong></td><td>High</td><td>Moderate</td><td>Easy</td></tr><tr><td><strong>Mode of Access</strong></td><td>Servers</td><td>Clients or Servers</td><td>Clients or Servers</td></tr><tr><td><strong>Capacity</strong></td><td>&gt; 10^12 bytes</td><td>10^9-10^12 bytes</td><td>10^9 bytes</td></tr><tr><td><strong>Usage</strong></td><td>Application data</td><td>Unstructured, Shared data</td><td>OS</td></tr></tbody></table>
+|  | SAN | NAS | DAS |
+|---|---|---|---|
+| **Type of storage** | Blocks | Shared files | Sectors |
+| **Transmission of data** | Fiber Channel | Ethernet, TCP/IP | IDE/SCSI |
+| **Speed** | 5-10 ms | 20-50 ms | 5-10 ms |
+| **Complexity** | High | Moderate | Easy |
+| **Mode of access** | Servers | Clients or Servers | Clients or Servers |
+| **Capacity** | &gt; 10^12 bytes | 10^9-10^12 bytes | 10^9 bytes |
+| **Usage** | Application data | Unstructured, Shared data | OS |
 
 
 ## LVM
@@ -136,13 +145,15 @@ used to extend the size of a Logical Volume and resize the filesystem associated
     - ssh-keygen: use this command to create a new private/public key
       - -C: for adding comment into your pulic key
       -  -t dsa | ecdsa | ecdsa-sk | ed25519 | ed25519-sk | rsa Specifies the type of key to create.
+    ### ssh port forwarding
   
 <br>
-- watch: use it when you want run a command repeatedly
-- truncate: shrink or extend the size of a file to the specified size
-- lsblk: list block devices
-- diff: compare files line by line
 
+- [chmod](https://quickref.me/chmod.html)
+- [find](https://www.geeksforgeeks.org/find-command-in-linux-with-examples/)
+- watch: Runs the specified command repeatedly and displays the results on standard output
+- truncate: shrink or extend the size of a file to the specified size
+- diff: compare files line by line
 
 ---
 ## Systemd
