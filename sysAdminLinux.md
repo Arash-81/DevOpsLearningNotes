@@ -110,43 +110,92 @@ used to extend the size of a Logical Volume and resize the filesystem associated
 * * *
     
 ##  vim 
-    h,j,k,l -> move cursor 
-    x,X -> delete one char
-    r -> replace one char 
-    o,O -> open new line
-    a -> append (you can use it instead of i)
-    u -> undo
-    dw -> delete a word
-    dd -> delete a line
-    J -> join two lines
-    G -> go to line(G, 12G, 1G)
-    y -> yank/copy (yy, yw) 
-    p, P(paste)
-    / -> search - then you can use 'n' to go next match
-    $ -> end of the line 
-    ^ -> start of the line 
-    . -> repeat last thing you done 
-    v -> visual mode (you can select) 
-    : set nubmer/nonumber -> for add/remove line number
+
+### Basic Vim Navigation
+
+* `h`, `j`, `k`, `l` - Move the cursor left, down, up, and right, respectively.
+* `$` - Go to the end of the line.
+* `^` - Go to the beginning of the line.
+* `G` - Go to a specific line number.
+* `gg` - Go to the beginning of the file.
+
+### Vim Editing Commands
+
+* `x`, `X` - Delete a single character or a word, respectively.
+* `r` - Replace a single character.
+* `o`, `O` - Open a new line below or above the current line, respectively.
+* `a` - Append text to the end of the current line.
+* `u` - Undo the last change.
+* `dw` - Delete the current word.
+* `dd` - Delete the current line.
+* `J` - Join the current line with the next line.
+* `y` - Yank (copy) text.
+* `p` - Paste text.
+* `/` - Search for text.
+* `n` - Go to the next match for the search query.
+
+### Vim Visual Mode Commands
+
+* `v` - Enter visual mode.
+* `h`, `j`, `k`, `l` - Move the cursor left, down, up, and right, respectively, while selecting text.
+* `x`, `X` - Delete the selected text.
+* `y` - Yank (copy) the selected text.
+* `p` - Paste the selected text.
+
+### Other Useful Tips
+
+* `:` - Enter command mode.
+* `set nu/nonumber` - Toggle line numbers.
 
 * * *
 
--  [tmux](https://danielmiessler.com/p/tmux)
-    
+## [tmux](https://danielmiessler.com/p/tmux)
+ 
+  ### Session Management
 
--  ssh:
-    - ssh logs stores in /var/log/auth.log
-    - in ~/.ssh/config file you can add your ssh server details to improves the efficiency, security, and manageability of your SSH connections 
+  * `Ctrl` + `b` + `d` - Detach from session
+  * `Ctrl` + `b` + `n` - Next session
+  * `Ctrl` + `b` + `p` - Previous session
+  * `tmux ls` - List sessions
+
+  ### Pane Management
+
+  * `Ctrl` + `b` + `%` - Split pane with horizontal layout
+  * `Ctrl` + `b` + `" - Split pane with vertical layout
+  * `Ctrl` + `b` + arrow key - Switch to pane to the direction
+
+  ### Window Management
+
+  * `Ctrl` + `b` + `c` - Create window
+  * `Ctrl` + `b` + `,` - Rename current window
+  * `tmux new -s <session-name>` - Start a new session with the name `<session-name>`
+  * `tmux kill-ses -t <session-name>` - Kill session `<session-name>`
+  * `tmux a -t <session-name>` - Attach to a session with the name `<session-name>`
+  * `tmux a` - Attach to the last session you were connected
+
+---
+
+## ssh
     
-    - you should add your public key in .ssh/authorized_keys directory on server
-    - -i: you can add your pulic key file by this option
-    - -p: for setting the ssh port
-    - ssh config file on server stores in /etc/ssh/sshd-config
-    - ssh-keygen: use this command to create a new private/public key
-      - -C: for adding comment into your pulic key
-      -  -t dsa | ecdsa | ecdsa-sk | ed25519 | ed25519-sk | rsa Specifies the type of key to create.
-    ### ssh port forwarding
-  
+### Basic SSH Usage
+
+  * SSH logs are stored in `/var/log/auth.log`.
+  * You can add your SSH server details to the `~/.ssh/config` file to improve the efficiency, security, and manageability of your SSH connections.
+  * You should add your public key to the `.ssh/authorized_keys` directory on the server.
+  * You can use the `-i` option to specify your public key file when connecting to a server.
+  * You can use the `-p` option to specify the SSH port when connecting to a server.
+  * The SSH configuration file on the server is stored in `/etc/ssh/sshd-config`.
+  * You can use the `ssh-keygen` command to generate a new private/public key pair.
+      * Use the `-C` option to add a comment to your public key.
+      * Use the `-t` option to specify the type of key to generate. Common options include `rsa`, `dsa`, `ed25519` and `ecdsa`.
+
+  ### SSH Port Forwarding
+
+  * You can use SSH port forwarding to forward traffic from one port on your local machine to another port on a remote server.
+  * To do this, you can use the `-L` or `-R` options when connecting to the server.
+  * For example, to forward traffic from port 8080 on your local machine to port 80 on the remote server, you would use the following command:
+
+
 <br>
 
 - [chmod](https://quickref.me/chmod.html)
