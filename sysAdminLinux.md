@@ -194,6 +194,44 @@ used to extend the size of a Logical Volume and resize the filesystem associated
   * You can use SSH port forwarding to forward traffic from one port on your local machine to another port on a remote server.
   * To do this, you can use the `-L` or `-R` options when connecting to the server.
   * For example, to forward traffic from port 8080 on your local machine to port 80 on the remote server, you would use the following command:
+  
+        ssh -L 8080:localhost:80 user@remote_server
+
+## Generate a Self-Signed Certificate Using OpenSSL
+  
+**1. Generate Key pair using OpenSSL** 
+
+    openssl genrsa -out private.key 2048 
+
+  This command will generate an `RSA` key pair with a length of `2048`.
+
+**2. Extract the public key from the key pair**
+ 
+    openssl rsa -in private.key -pubout -out public.key
+  extract the public key from the key pair generated in step 1.
+
+**3. Generate a Certificate Signing Request (CSR)** 
+ 
+  The next step is to generate a Certificate Signing Request (CSR). This will be used by the certificate authority (CA) to create the self-signed certificate. To generate the CSR, run this command in your terminal:
+
+    openssl req -new -key private.key -out certificate.csr
+
+  We suggest verifying the CSR generated before you submit it to the Certificate Authority. Run this command to verify the details of your CSR.
+
+    openssl req -text -in certificate.csr -noout -verify
+The `-noout` switch omits the output of the encoded version of the CSR. The `-verify` switch checks the signature of the file to make sure it hasn't been modified.
+
+**4. Generate the self-signed certificate** 
+  
+  Finally, generate the self-signed certificate using the private key and CSR. Run this command to generate the self-signed certificate on the terminal:
+
+    openssl x509 -in certificate.csr -out certificate.crt -req -signkey private.key -days 365
+
+  
+  What is a self-signed certificate?
+  Why might you want to use a self-signed certificate?
+  What are the risks of using a self-signed certificate?
+  How to install a self-signed certificate on your server and client machines.
 
 
 <br>
