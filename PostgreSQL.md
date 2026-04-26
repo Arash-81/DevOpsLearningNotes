@@ -40,3 +40,50 @@ User Related:
 - `SELECT * FROM pg_extension;`: Check Extensions enabled in postgres
 - `SELECT * FROM pg_available_extension_versions;`: Show available extensions
 - `SELECT * FROM pg_indexes WHERE tablename='__table_name__' AND schemaname='__schema_name__';`: Show table indexes
+- `select * from pg_stat_user_tables;`: Check tuples of a table
+- `select pg_size_pretty(pg_relation_size('__table_name__'));`: Check table size
+- Check Permissions for a Specific User: 
+ 
+  ```sql
+  SELECT
+      grantee,
+      table_schema,
+      table_name,
+      privilege_type
+  FROM information_schema.role_table_grants
+  WHERE grantee = '__username__'
+  ORDER BY table_name, privilege_type;
+  ```
+- Check Permissions on a Specific Table:
+
+  ```sql
+  SELECT
+      grantee,
+      privilege_type,
+      is_grantable
+  FROM information_schema.role_table_grants
+  WHERE table_name = '__table_name__';
+  ```
+- Check Specific User privileges on tables:
+
+  ```sql
+  SELECT 
+      table_schema,
+      table_name,
+      STRING_AGG(privilege_type, ', ' ORDER BY privilege_type) AS privileges
+  FROM information_schema.role_table_grants
+  WHERE grantee = '__username__'
+  GROUP BY table_schema, table_name
+  ORDER BY table_schema, table_name;
+  ```
+- Check Specific User privileges on schemas:
+  
+  ```sql
+  SELECT 
+      n.nspname AS schema,
+      has_schema_privilege('iran_map_read_only', n.nspname, 'USAGE') AS usage,
+      has_schema_privilege('iran_map_read_only', n.nspname, 'CREATE') AS create
+  FROM pg_namespace n
+  WHERE n.nspname NOT IN ('information_schema', 'pg_catalog', 'pg_toast')
+  ORDER BY n.nspname;
+  ```
