@@ -81,9 +81,32 @@ User Related:
   ```sql
   SELECT 
       n.nspname AS schema,
-      has_schema_privilege('iran_map_read_only', n.nspname, 'USAGE') AS usage,
-      has_schema_privilege('iran_map_read_only', n.nspname, 'CREATE') AS create
+      has_schema_privilege('__username__', n.nspname, 'USAGE') AS usage,
+      has_schema_privilege('__username__', n.nspname, 'CREATE') AS create
   FROM pg_namespace n
   WHERE n.nspname NOT IN ('information_schema', 'pg_catalog', 'pg_toast')
   ORDER BY n.nspname;
+  ```
+- Get list of sessions of specific user
+  ```sql
+  SELECT
+      pid,
+      usename,
+      application_name,
+      client_addr,
+      state,
+      query_start,
+      state_change
+  FROM pg_stat_activity
+  WHERE usename = '__username__'
+    AND state = 'idle';
+  ```
+
+- Kill idle session of specific user
+  ```sql
+  SELECT pg_terminate_backend(pid)
+  FROM pg_stat_activity
+  WHERE usename = '__username__' 
+    AND state = 'idle'
+    AND pid <> pg_backend_pid();
   ```
