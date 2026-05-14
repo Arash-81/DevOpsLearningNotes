@@ -110,3 +110,97 @@ User Related:
     AND state = 'idle'
     AND pid <> pg_backend_pid();
   ```
+
+## Performance & Statistics Queries
+
+- Full query execution plan with runtime stats, buffer usage, and cost estimates — prefix any query with this to diagnose slow queries:
+
+  ```sql
+  EXPLAIN (ANALYZE, VERBOSE, COSTS, TIMING, BUFFERS)
+  SELECT ...;
+  ```
+
+
+
+- Top 10 queries by total execution time (requires `pg_stat_statements` extension):
+
+  ```sql
+  SELECT round((100 * total_time / sum(total_time)
+             OVER ())::numeric, 2) percent,
+             round(total_time::numeric, 2) AS total,
+             calls,
+             round(mean_time::numeric, 2) AS mean,
+             substring(query, 1, 200)
+   FROM  pg_stat_statements
+             ORDER BY total_time DESC
+             LIMIT 10;
+  ```
+
+- Tables with the most sequential scans — useful for finding candidates for new indexes (ordered by total tuples read via seq scan):
+
+  ```sql
+  SELECT schemaname, relname, seq_scan, seq_tup_read,
+         seq_tup_read / seq_scan AS avg, idx_scan
+  FROM   pg_stat_user_tables
+  WHERE  seq_scan > 0
+  ORDER BY seq_tup_read DESC
+  LIMIT  25;
+  ```
+
+- Index sizes and scan counts — shows how often each index is used and how much space it occupies:
+
+  ```sql
+  SELECT schemaname, relname, indexrelname, idx_scan,
+         pg_size_pretty(pg_relation_size(indexrelid)) AS idx_size
+  FROM   pg_stat_user_indexes;
+  ```
+
+- Average tuples returned per index scan — high values may indicate low-selectivity indexes:
+
+  ```sql
+  SELECT indexrelname,
+         cast(idx_tup_read AS numeric) / idx_scan AS avg_tuples,
+         idx_scan, idx_tup_read
+  FROM pg_stat_user_indexes
+         WHERE idx_scan > 0;
+  ```
+
+- Insert/update/delete ratio per table — useful for understanding table workload characteristics:
+
+  ```sql
+  SELECT relname,
+         cast(n_tup_ins AS numeric) / (n_tup_ins + n_tup_upd + n_tup_del) AS ins_pct,
+         cast(n_tup_upd AS numeric) / (n_tup_ins + n_tup_upd + n_tup_del) AS upd_pct,
+         cast(n_tup_del AS numeric) / (n_tup_ins + n_tup_upd + n_tup_del) AS del_pct
+  FROM pg_stat_user_tables
+         ORDER BY relname;
+  ```
+
+- HOT update percentage per table — HOT (Heap Only Tuple) updates avoid index churn; low `hot_pct` means updates are causing many index writes:
+
+  ```sql
+  SELECT relname, n_tup_upd, n_tup_hot_upd,
+         cast(n_tup_hot_upd AS numeric) / n_tup_upd AS hot_pct
+  FROM pg_stat_user_tables
+         WHERE n_tup_upd > 0 ORDER BY hot_pct;
+  ```
+
+- Index scan vs sequential scan ratio per table — low `idx_scan_pct` means the table is mostly accessed via seq scans, suggesting a missing index:
+
+  ```sql
+  SELECT schemaname, relname, seq_scan, idx_scan,
+         cast(idx_scan AS numeric) / (idx_scan + seq_scan)
+         AS idx_scan_pct
+  FROM pg_stat_user_tables
+         WHERE (idx_scan + seq_scan) > 0 ORDER BY idx_scan_pct;
+  ```
+
+- Index vs sequential tuple fetch ratio per table — low `idx_tup_pct` means most rows are fetched via seq scans rather than indexes:
+
+  ```sql
+  SELECT relname, seq_tup_read, idx_tup_fetch,
+         cast(idx_tup_fetch AS numeric) / (idx_tup_fetch + seq_tup_read)
+         AS idx_tup_pct
+  FROM pg_stat_user_tables
+         WHERE (idx_tup_fetch + seq_tup_read) > 0 ORDER BY idx_tup_pct;
+  ```
